@@ -21,11 +21,18 @@
 #define CORAZON 3
 #define BORRADOR 32
 
-#define LIMITE_LATERAL_IZQUIERDO 6
-#define LIMITE_LATERAL_DERECHO 74
+#define LIMITE_LATERAL_IZQUIERDO 5
+#define LIMITE_LATERAL_DERECHO 75
 
 #define LIMITE_ARRIBA 5
 #define LIMITE_ABAJO 25
+
+
+#define LATERAL_IZQUIERDO 1
+#define LATERAL_DERECHO 2
+#define SUPERIOR 3
+#define INFERIOR 4
+#define NO_COLISION 5
 
 #define TO_STR(ch) ( ( ((ch) >= 0 ) && ((ch) <= 9) )? (48 + (ch)) : ('a' + ((ch) - 10)) )
 
@@ -42,7 +49,7 @@ void Loop(Juego *juego);
 void MovimientoPlataforma(Plataforma * plataforma,Pelota * pelota,uint8_t tecla);
 bool ColisionPlataforma(Plataforma * plataforma,Pelota * pelota);
 bool LimiteLaterales(uint8_t x);
-bool LimitesMapa(uint8_t x, uint8_t y);
+uint8_t LimitesMapa(uint8_t x, uint8_t y);
 void DibujarPlataforma(Plataforma * plataforma);
 void DibujarBloques(Bloques bloques [4][21]);
 void DibujarPelota(Pelota * pelota);
