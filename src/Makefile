@@ -1,5 +1,5 @@
 TARGET=screen.elf
-C_SOURCES=main.c
+C_SOURCES=main.c functions.c
 ASM_SOURCES=start.S
 ASM_OUTPUT=$(TARGET).s
 ASMGEN_SOURCES=$(C_SOURCES:.c=.S)

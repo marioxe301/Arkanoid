@@ -1,18 +1,12 @@
-#include <screen.h>
-#include <keypad.h>
-
-#define TO_STR(ch) ( ( ((ch) >= 0 ) && ((ch) <= 9) )? (48 + (ch)) : ('a' + ((ch) - 10)) )
+#include "functions.h"
 
 int main() {
-    clear_screen();
+    Juego juego;
+    Inicializar(&juego);
+
+   /* clear_screen();
     set_color(WHITE, BLACK);
     set_cursor(29, 15);
-    /* put_char('H');
-    put_char('e');
-    put_char('l');
-    put_char('l');
-    put_char('o');
-    put_char('!'); */
     puts("Hello!");
     
     uint8_t f, b;
@@ -33,7 +27,20 @@ int main() {
             set_cursor(10, 15);
             puts("Key press");
         }
+    }*/
+
+    DibujarLimites();
+    DibujarElementos(&juego);
+    DibujarVidas(3);
+
+    keypad_init();
+    while (true)
+    {
+        uint8_t keyboard = keypad_getkey();
+        MovimientoPlataforma(&juego.plataforma,keyboard);
+        delay_ms(70);
     }
+    
 
     return 0;
 }
