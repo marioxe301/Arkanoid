@@ -139,11 +139,17 @@ void MovimientoPlataforma(Plataforma * plataforma,Pelota * pelota,uint8_t tecla)
     uint8_t tempx;
     if(tecla==IZQUIERDA){
         tempx = plataforma->x-1;
-        if(!LimiteLaterales(tempx)){
+        if(!LimiteLaterales(tempx) && !pelota->movimiento){
+            BorrarPlataforma(plataforma);
+            BorrarPelota(pelota);
+            plataforma->x--;
+            pelota->x--;
+            DibujarPelota(pelota);
+            DibujarPlataforma(plataforma);
+        }else if(!LimiteLaterales(tempx)){
             BorrarPlataforma(plataforma);
             plataforma->x--;
-            
-            plataforma->x--;
+            DibujarPelota(pelota);
             DibujarPlataforma(plataforma);
         }
         
@@ -151,15 +157,25 @@ void MovimientoPlataforma(Plataforma * plataforma,Pelota * pelota,uint8_t tecla)
     
     if(tecla==DERECHA){
         tempx = plataforma->x+1;
-        if(!LimiteLaterales(tempx)){
+        if(!LimiteLaterales(tempx) && !pelota->movimiento){
+            BorrarPlataforma(plataforma);
+            BorrarPelota(pelota);
+            plataforma->x++;
+            pelota->x++;
+            DibujarPelota(pelota);
+            DibujarPlataforma(plataforma);
+        }else if(!LimiteLaterales(tempx)){
             BorrarPlataforma(plataforma);
             plataforma->x++;
+            DibujarPelota(pelota);
             DibujarPlataforma(plataforma);
         }
     }
 
     if(tecla==SPACE){
-
+        pelota->movimiento=true;
+        pelota->izquierda=true;
+        pelota->arriba=true;
     }
 }
 
@@ -243,18 +259,111 @@ void BorrarPelota(Pelota * pelota){
 }
 
 void MovimientoPelota(Pelota *pelota){
-        uint8_t fg,bg;
-        get_color(&fg,&bg);
-        set_color(WHITE,BLACK);
+       //si la pelota se mueve en diagonal para arriba
+       if(pelota->izquierda && pelota->arriba){
+           if(LimitesMapa(pelota->x,pelota->y)==LATERAL_IZQUIERDO){
+               pelota->izquierda=false;
+               pelota->derecha=true;
+           }
+           if(LimitesMapa(pelota->x,pelota->y)==LATERAL_DERECHO){
+               pelota->izquierda=true;
+               pelota->derecha=false;
+           }
+           if(LimitesMapa(pelota->x,pelota->y)==SUPERIOR){
+               pelota->abajo=true;
+               pelota->arriba=false;
+           }
+           if(LimitesMapa(pelota->x,pelota->y)==INFERIOR){
+               pelota->abajo=false;
+               pelota->arriba=true;
+           }
+               BorrarPelota(pelota);
+               pelota->x--;
+               pelota->y--;
+               DibujarPelota(pelota);
+           
+       }else if(pelota->derecha && pelota->arriba){
+           
+           if(LimitesMapa(pelota->x,pelota->y)==LATERAL_IZQUIERDO){
+               pelota->izquierda=false;
+               pelota->derecha=true;
+           }
+           if(LimitesMapa(pelota->x,pelota->y)==LATERAL_DERECHO){
+               pelota->izquierda=true;
+               pelota->derecha=false;
+           }
+           if(LimitesMapa(pelota->x,pelota->y)==SUPERIOR){
+               pelota->abajo=true;
+               pelota->arriba=false;
+           }
+           if(LimitesMapa(pelota->x,pelota->y)==INFERIOR){
+               pelota->abajo=false;
+               pelota->arriba=true;
+           }
+               BorrarPelota(pelota);
+               pelota->x++;
+               pelota->y--;
+               DibujarPelota(pelota);
+           
+       }else if(pelota->izquierda && pelota->abajo){
+           
+           if(LimitesMapa(pelota->x,pelota->y)==LATERAL_IZQUIERDO){
+               pelota->izquierda=false;
+               pelota->derecha=true;
+           }
+           if(LimitesMapa(pelota->x,pelota->y)==LATERAL_DERECHO){
+               pelota->izquierda=true;
+               pelota->derecha=false;
+           }
+           if(LimitesMapa(pelota->x,pelota->y)==SUPERIOR){
+               pelota->abajo=true;
+               pelota->arriba=false;
+           }
+           if(LimitesMapa(pelota->x,pelota->y)==INFERIOR){
+               pelota->abajo=false;
+               pelota->arriba=true;
+           }
+               BorrarPelota(pelota);
+               pelota->x--;
+               pelota->y++;
+               DibujarPelota(pelota);
+           
+       }else if(pelota->derecha && pelota->abajo){
+         
+           if(LimitesMapa(pelota->x,pelota->y)==LATERAL_IZQUIERDO){
+               pelota->izquierda=false;
+               pelota->derecha=true;
+           }
+           if(LimitesMapa(pelota->x,pelota->y)==LATERAL_DERECHO){
+               pelota->izquierda=true;
+               pelota->derecha=false;
+           }
+           if(LimitesMapa(pelota->x,pelota->y)==SUPERIOR){
+               pelota->abajo=true;
+               pelota->arriba=false;
+           }
+           if(LimitesMapa(pelota->x,pelota->y)==INFERIOR){
+               pelota->abajo=false;
+               pelota->arriba=true;
+           }
+               BorrarPelota(pelota);
+               pelota->x++;
+               pelota->y++;
+               DibujarPelota(pelota);
 
-
-        set_color(fg,bg);
+       }
 }
 
-bool LimitesMapa(uint8_t x, uint8_t y){
-    if((x-1==LIMITE_LATERAL_IZQUIERDO || x+1==LIMITE_LATERAL_DERECHO || y-1 == LIMITE_ARRIBA || y+1 == LIMITE_ABAJO)){
-        return true;
+uint8_t LimitesMapa(uint8_t x, uint8_t y){
+    if(x-1==LIMITE_LATERAL_IZQUIERDO){
+        return LATERAL_IZQUIERDO;
+    }else if(x+1==LIMITE_LATERAL_DERECHO){
+        return LATERAL_DERECHO;
+    }else if(y-1 == LIMITE_ARRIBA){
+        return SUPERIOR;
+    }else if(y+1 == LIMITE_ABAJO){
+        return INFERIOR;
     }else{
-        return false;
+        return NO_COLISION;
     }
 }
