@@ -44,7 +44,7 @@
 void Inicializar(Juego *juego);
 void DibujarLimites();
 void DibujarElementos(Juego * juego);
-void DibujarVidas(uint8_t vidas);
+void DibujarVidas(Juego * juego);
 void Loop(Juego *juego);
 void MovimientoPlataforma(Plataforma * plataforma,Pelota * pelota,uint8_t tecla);
 bool ColisionPlataforma(Plataforma * plataforma,Pelota * pelota);
@@ -55,8 +55,12 @@ void DibujarBloques(Bloques bloques [4][21]);
 void DibujarPelota(Pelota * pelota);
 void BorrarPlataforma(Plataforma * plataforma);
 void BorrarPelota(Pelota * pelota);
-void MovimientoPelota(Pelota *pelota);
+void MovimientoPelota(Pelota *pelota,Plataforma * plataforma,Juego * juego);
 
+void ReiniciarPelota(Pelota * pelota,Plataforma * plataforma);
+
+void QuitarVidas(Juego * juego);
+bool VerificarGanar(Juego * juego);
 
 
 #endif // FUNCTIONS_H

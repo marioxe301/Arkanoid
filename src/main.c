@@ -28,17 +28,17 @@ int main() {
             puts("Key press");
         }
     }*/
-
+    
     DibujarLimites();
     DibujarElementos(&juego);
-    DibujarVidas(3);
+    DibujarVidas(&juego);
 
     keypad_init();
-    while (true)
+    while (VerificarGanar(&juego))
     {
         uint8_t keyboard = keypad_getkey();
         MovimientoPlataforma(&juego.plataforma,&juego.pelota,keyboard);
-        MovimientoPelota(&juego.pelota);
+        MovimientoPelota(&juego.pelota,&juego.plataforma,&juego);
         delay_ms(70);
     }
     
