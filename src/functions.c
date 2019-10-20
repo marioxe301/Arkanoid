@@ -243,6 +243,15 @@ void BorrarPlataforma(Juego * juego){
 }
 
 bool ColisionPlataforma(Juego * juego){
+    if((juego->pelota.x==juego->plataforma.x 
+    || juego->pelota.x==juego->plataforma.x+1
+    || juego->pelota.x==juego->plataforma.x+2
+    || juego->pelota.x==juego->plataforma.x-1
+    || juego->pelota.x==juego->plataforma.x-2) 
+    && juego->pelota.y == juego->plataforma.y-1){
+        //puts("no cayo");
+        return true;
+    }
     return false;
 }
 
@@ -350,6 +359,7 @@ void DecidirTrayectoria(Juego * juego,uint8_t colision){
             }
         break;    
     case INFERIOR:
+               puts("Cayo");
                QuitarVidas(juego);
                BorrarPelota(juego);
                ReiniciarPelota(juego);
@@ -357,7 +367,17 @@ void DecidirTrayectoria(Juego * juego,uint8_t colision){
                DibujarVidas(juego);
         break;
     default:
-        //mantiene la trayectoria actual
+        if(ColisionPlataforma(juego)){
+            if(juego->pelota.izquierda){
+                ReiniciarTrayectoria(juego);
+                juego->pelota.arriba = true;
+                juego->pelota.izquierda = true;
+            }else{
+                ReiniciarTrayectoria(juego);
+                juego->pelota.arriba = true;
+                juego->pelota.derecha = true;
+            }
+        }
         break;
     }
 }
