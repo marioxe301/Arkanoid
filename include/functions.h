@@ -41,23 +41,26 @@
 #include <keypad.h>
 #include <screen.h>
 
-void Inicializar(Juego *juego);
+void Inicializar(Juego * juego);
 void DibujarLimites();
 void DibujarElementos(Juego * juego);
 void DibujarVidas(Juego * juego);
 void Loop(Juego *juego);
-void MovimientoPlataforma(Plataforma * plataforma,Pelota * pelota,uint8_t tecla);
-bool ColisionPlataforma(Plataforma * plataforma,Pelota * pelota);
+void MovimientoPlataforma(Juego * juego,uint8_t tecla);
+bool ColisionPlataforma(Juego * juego);
 bool LimiteLaterales(uint8_t x);
 uint8_t LimitesMapa(uint8_t x, uint8_t y);
-void DibujarPlataforma(Plataforma * plataforma);
-void DibujarBloques(Bloques bloques [4][21]);
-void DibujarPelota(Pelota * pelota);
-void BorrarPlataforma(Plataforma * plataforma);
-void BorrarPelota(Pelota * pelota);
-void MovimientoPelota(Pelota *pelota,Plataforma * plataforma,Juego * juego);
+void DibujarPlataforma(Juego * juego);
+void DibujarBloques(Juego * juego);
+void DibujarPelota(Juego * juego);
+void BorrarPlataforma(Juego * juego);
+void BorrarPelota(Juego * juego);
+void MovimientoPelota(Juego * juego);
 
-void ReiniciarPelota(Pelota * pelota,Plataforma * plataforma);
+void DecidirTrayectoria(Juego * juego,uint8_t colision);
+void ReiniciarTrayectoria(Juego * juego);
+
+void ReiniciarPelota(Juego * juego);
 
 void QuitarVidas(Juego * juego);
 bool VerificarGanar(Juego * juego);

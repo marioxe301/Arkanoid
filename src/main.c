@@ -37,8 +37,8 @@ int main() {
     while (VerificarGanar(&juego))
     {
         uint8_t keyboard = keypad_getkey();
-        MovimientoPlataforma(&juego.plataforma,&juego.pelota,keyboard);
-        MovimientoPelota(&juego.pelota,&juego.plataforma,&juego);
+        MovimientoPlataforma(&juego,keyboard);
+        MovimientoPelota(&juego);
         delay_ms(70);
     }
     

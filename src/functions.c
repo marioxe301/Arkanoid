@@ -74,7 +74,7 @@ void DibujarElementos(Juego * juego){
     uint8_t fg,bg;
     get_color(&fg,&bg);
 
-    set_color(YELLOW,BLACK);
+    set_color(MAGENTA,BLACK);
     set_cursor(juego->plataforma.y,juego->plataforma.x-2);
     put_char(PLATAFORMA_IZQUIERDA);
     set_cursor(juego->plataforma.y,juego->plataforma.x-1);
@@ -149,47 +149,47 @@ void DibujarVidas(Juego * juego){
     set_color(fg,bg);
 }
 
-void MovimientoPlataforma(Plataforma * plataforma,Pelota * pelota,uint8_t tecla){
+void MovimientoPlataforma(Juego * juego,uint8_t tecla){
     uint8_t tempx;
     if(tecla==IZQUIERDA){
-        tempx = plataforma->x-1;
-        if(!LimiteLaterales(tempx) && !pelota->movimiento){
-            BorrarPlataforma(plataforma);
-            BorrarPelota(pelota);
-            plataforma->x--;
-            pelota->x--;
-            DibujarPelota(pelota);
-            DibujarPlataforma(plataforma);
+        tempx = juego->plataforma.x-1;
+        if(!LimiteLaterales(tempx) && !juego->pelota.movimiento){
+            BorrarPlataforma(juego);
+            BorrarPelota(juego);
+            juego->plataforma.x--;
+            juego->pelota.x--;
+            DibujarPelota(juego);
+            DibujarPlataforma(juego);
         }else if(!LimiteLaterales(tempx)){
-            BorrarPlataforma(plataforma);
-            plataforma->x--;
-            DibujarPelota(pelota);
-            DibujarPlataforma(plataforma);
+            BorrarPlataforma(juego);
+            juego->plataforma.x--;
+            DibujarPelota(juego);
+            DibujarPlataforma(juego);
         }
         
     }
     
     if(tecla==DERECHA){
-        tempx = plataforma->x+1;
-        if(!LimiteLaterales(tempx) && !pelota->movimiento){
-            BorrarPlataforma(plataforma);
-            BorrarPelota(pelota);
-            plataforma->x++;
-            pelota->x++;
-            DibujarPelota(pelota);
-            DibujarPlataforma(plataforma);
+        tempx = juego->plataforma.x+1;
+        if(!LimiteLaterales(tempx) && !juego->pelota.movimiento){
+            BorrarPlataforma(juego);
+            BorrarPelota(juego);
+            juego->plataforma.x++;
+            juego->pelota.x++;
+            DibujarPelota(juego);
+            DibujarPlataforma(juego);
         }else if(!LimiteLaterales(tempx)){
-            BorrarPlataforma(plataforma);
-            plataforma->x++;
-            DibujarPelota(pelota);
-            DibujarPlataforma(plataforma);
+            BorrarPlataforma(juego);
+            juego->plataforma.x++;
+            DibujarPelota(juego);
+            DibujarPlataforma(juego);
         }
     }
 
     if(tecla==SPACE){
-        pelota->movimiento=true;
-        pelota->izquierda=true;
-        pelota->arriba=true;
+        juego->pelota.movimiento=true;
+        juego->pelota.izquierda=true;
+        juego->pelota.arriba=true;
     }
 }
 
@@ -203,211 +203,187 @@ bool LimiteLaterales(uint8_t x){
     }
 }
 
-void DibujarPlataforma(Plataforma * plataforma){
+void DibujarPlataforma(Juego * juego){
     uint8_t fg,bg;
     get_color(&fg,&bg);
-    set_color(YELLOW,BLACK);
+    set_color(MAGENTA,BLACK);
 
-    set_cursor(plataforma->y,plataforma->x-2);
+    set_cursor(juego->plataforma.y,juego->plataforma.x-2);
     put_char(PLATAFORMA_IZQUIERDA);
-    set_cursor(plataforma->y,plataforma->x-1);
+    set_cursor(juego->plataforma.y,juego->plataforma.x-1);
     put_char(PLATAFORMA_CENTRO);
-    set_cursor(plataforma->y,plataforma->x);
+    set_cursor(juego->plataforma.y,juego->plataforma.x);
     put_char(PLATAFORMA_CENTRO);
-    set_cursor(plataforma->y,plataforma->x+1);
+    set_cursor(juego->plataforma.y,juego->plataforma.x+1);
     put_char(PLATAFORMA_CENTRO);
-    set_cursor(plataforma->y,plataforma->x+2);
+    set_cursor(juego->plataforma.y,juego->plataforma.x+2);
     put_char(PLATAFORMA_DERECHA);
 
     set_color(fg,bg);
 }
 
-void BorrarPlataforma(Plataforma * plataforma){
+void BorrarPlataforma(Juego * juego){
         uint8_t fg,bg;
         get_color(&fg,&bg);
         set_color(BLACK,BLACK);
         //borra la platforma
-        set_cursor(plataforma->y,plataforma->x-2);
+        set_cursor(juego->plataforma.y,juego->plataforma.x-2);
         put_char(BORRADOR);
-        set_cursor(plataforma->y,plataforma->x-1);
+        set_cursor(juego->plataforma.y,juego->plataforma.x-1);
         put_char(BORRADOR);
-        set_cursor(plataforma->y,plataforma->x);
+        set_cursor(juego->plataforma.y,juego->plataforma.x);
         put_char(BORRADOR);
-        set_cursor(plataforma->y,plataforma->x+1);
+        set_cursor(juego->plataforma.y,juego->plataforma.x+1);
         put_char(BORRADOR);
-        set_cursor(plataforma->y,plataforma->x+2);
+        set_cursor(juego->plataforma.y,juego->plataforma.x+2);
         put_char(BORRADOR);
 
         //restaura el color
         set_color(fg,bg);
 }
 
-bool ColisionPlataforma(Plataforma * plataforma,Pelota * pelota){
-    if(((plataforma->x || plataforma->x+1 ||plataforma->x+2 || plataforma->x-1|| plataforma-> x-2)== pelota->x)&& pelota->y== plataforma->y-1){
-        return true;
-    }else{
-        return false;
-    }
+bool ColisionPlataforma(Juego * juego){
+    return false;
 }
 
-void DibujarPelota(Pelota * pelota){
+void DibujarPelota(Juego * juego){
         uint8_t fg,bg;
         get_color(&fg,&bg);
         set_color(WHITE,BLACK);
 
-        set_cursor(pelota->y,pelota->x);
+        set_cursor(juego->pelota.y,juego->pelota.x);
         put_char(PELOTA);
 
         set_color(fg,bg);
 }
 
-void BorrarPelota(Pelota * pelota){
+void BorrarPelota(Juego * juego){
         uint8_t fg,bg;
         get_color(&fg,&bg);
         set_color(BLACK,BLACK);
 
-        set_cursor(pelota->y,pelota->x);
+        set_cursor(juego->pelota.y,juego->pelota.x);
         put_char(BORRADOR);
 
         set_color(fg,bg);
 }
 
-void MovimientoPelota(Pelota *pelota,Plataforma * plataforma, Juego * juego){
-       //si la pelota se mueve en diagonal para arriba
-       if(pelota->izquierda && pelota->arriba){
-           
+void MovimientoPelota(Juego * juego){
+        uint8_t colision ;
 
-           if(LimitesMapa(pelota->x,pelota->y)==LATERAL_IZQUIERDO){
-               pelota->izquierda=false;
-               pelota->derecha=true;
-           }
-           if(LimitesMapa(pelota->x,pelota->y)==LATERAL_DERECHO){
-               pelota->izquierda=true;
-               pelota->derecha=false;
-           }
-           if(LimitesMapa(pelota->x,pelota->y)==SUPERIOR){
-               pelota->abajo=true;
-               pelota->arriba=false;
-           }
-           if(LimitesMapa(pelota->x,pelota->y)==INFERIOR){
-               pelota->abajo=false;
-               pelota->arriba=true;
-           }
-               BorrarPelota(pelota);
-               pelota->x--;
-               pelota->y--;
-               DibujarPelota(pelota);
+       if(juego->pelota.izquierda && juego->pelota.arriba){
+               BorrarPelota(juego);
+               juego->pelota.x--;
+               juego->pelota.y--;
+               DibujarPelota(juego);
+               colision = LimitesMapa(juego->pelota.x,juego->pelota.y);
+               DecidirTrayectoria(juego,colision);
            
-       }else if(pelota->derecha && pelota->arriba){
+       }else if(juego->pelota.derecha && juego->pelota.arriba){
+               
+               BorrarPelota(juego);
+               juego->pelota.x++;
+               juego->pelota.y--;
+               DibujarPelota(juego);
+               colision = LimitesMapa(juego->pelota.x,juego->pelota.y);
+               DecidirTrayectoria(juego,colision);
            
-           if(LimitesMapa(pelota->x,pelota->y)==LATERAL_IZQUIERDO){
-               pelota->izquierda=false;
-               pelota->derecha=true;
-           }
-           if(LimitesMapa(pelota->x,pelota->y)==LATERAL_DERECHO){
-               pelota->izquierda=true;
-               pelota->derecha=false;
-           }
-           if(LimitesMapa(pelota->x,pelota->y)==SUPERIOR){
-               pelota->abajo=true;
-               pelota->arriba=false;
-           }
-           if(LimitesMapa(pelota->x,pelota->y)==INFERIOR){
-               pelota->abajo=false;
-               pelota->arriba=true;
-           }
-               BorrarPelota(pelota);
-               pelota->x++;
-               pelota->y--;
-               DibujarPelota(pelota);
-           
-       }else if(pelota->izquierda && pelota->abajo){
-           if(ColisionPlataforma(plataforma,pelota)){
-               pelota->abajo= false;
-               pelota->arriba= true;
-           }
-           if(LimitesMapa(pelota->x,pelota->y)==LATERAL_IZQUIERDO){
-               pelota->izquierda=false;
-               pelota->derecha=true;
-           }
-           if(LimitesMapa(pelota->x,pelota->y)==LATERAL_DERECHO){
-               pelota->izquierda=true;
-               pelota->derecha=false;
-           }
-           if(LimitesMapa(pelota->x,pelota->y)==SUPERIOR){
-               pelota->abajo=true;
-               pelota->arriba=false;
-           }
-           if(LimitesMapa(pelota->x,pelota->y)==INFERIOR){
-                QuitarVidas(juego);
-                BorrarPelota(pelota);
-                ReiniciarPelota(pelota,plataforma);
-                DibujarPelota(pelota);
-                DibujarVidas(juego);
-           }else{
-               BorrarPelota(pelota);
-               pelota->x--;
-               pelota->y++;
-               DibujarPelota(pelota);
-           }
-           
-       }else if(pelota->derecha && pelota->abajo){
-           if(ColisionPlataforma(plataforma,pelota)){
-               pelota->abajo= false;
-               pelota->arriba= true;
-           }
-
-           if(LimitesMapa(pelota->x,pelota->y)==LATERAL_IZQUIERDO){
-               pelota->izquierda=false;
-               pelota->derecha=true;
-           }
-           if(LimitesMapa(pelota->x,pelota->y)==LATERAL_DERECHO){
-               pelota->izquierda=true;
-               pelota->derecha=false;
-           }
-           if(LimitesMapa(pelota->x,pelota->y)==SUPERIOR){
-               pelota->abajo=true;
-               pelota->arriba=false;
-           }
-           if(LimitesMapa(pelota->x,pelota->y)==INFERIOR){
-               QuitarVidas(juego);
-               BorrarPelota(pelota);
-               ReiniciarPelota(pelota,plataforma);
-               DibujarPelota(pelota);
-               DibujarVidas(juego);
-
-           }else{
-               BorrarPelota(pelota);
-               pelota->x++;
-               pelota->y++;
-               DibujarPelota(pelota);
-           }
-
+       }else if(juego->pelota.izquierda && juego->pelota.abajo){       
+               BorrarPelota(juego);
+               juego->pelota.x--;
+               juego->pelota.y++;
+               DibujarPelota(juego);
+               colision = LimitesMapa(juego->pelota.x,juego->pelota.y);
+               DecidirTrayectoria(juego,colision);
+    
+       }else if(juego->pelota.derecha && juego->pelota.abajo){
+               BorrarPelota(juego);
+               juego->pelota.x++;
+               juego->pelota.y++;
+               DibujarPelota(juego);
+               colision = LimitesMapa(juego->pelota.x,juego->pelota.y);
+               DecidirTrayectoria(juego,colision);
        }
+
+}
+void ReiniciarTrayectoria(Juego * juego){
+    juego->pelota.abajo=false;
+    juego->pelota.arriba = false;
+    juego->pelota.derecha = false;
+    juego->pelota.izquierda = false;
+}
+
+void DecidirTrayectoria(Juego * juego,uint8_t colision){
+    switch (colision)
+    {
+    case LATERAL_IZQUIERDO:
+            if(juego->pelota.arriba){
+                    ReiniciarTrayectoria(juego);
+                    juego->pelota.arriba = true;
+                    juego->pelota.derecha = true;
+            }else{
+                    ReiniciarTrayectoria(juego);
+                    juego->pelota.abajo = true;
+                    juego->pelota.derecha = true;
+            }
+        break;
+    case LATERAL_DERECHO:
+            if(juego->pelota.arriba){
+                    ReiniciarTrayectoria(juego);
+                    juego->pelota.arriba = true;
+                    juego->pelota.izquierda = true;
+            }else{
+                    ReiniciarTrayectoria(juego);
+                    juego->pelota.abajo = true;
+                    juego->pelota.izquierda = true;
+            }
+        break;
+    case SUPERIOR:
+            if(juego->pelota.izquierda){
+                    ReiniciarTrayectoria(juego);
+                    juego->pelota.abajo = true;
+                    juego->pelota.izquierda = true;
+            }else{
+                    ReiniciarTrayectoria(juego);
+                    juego->pelota.abajo = true;
+                    juego->pelota.derecha = true;
+            }
+        break;    
+    case INFERIOR:
+               QuitarVidas(juego);
+               BorrarPelota(juego);
+               ReiniciarPelota(juego);
+               DibujarPelota(juego);
+               DibujarVidas(juego);
+        break;
+    default:
+        //mantiene la trayectoria actual
+        break;
+    }
 }
 
 uint8_t LimitesMapa(uint8_t x, uint8_t y){
-    if(x-1==LIMITE_LATERAL_IZQUIERDO){
+    if(x==LIMITE_LATERAL_IZQUIERDO){
         return LATERAL_IZQUIERDO;
-    }else if(x+1==LIMITE_LATERAL_DERECHO){
+    }else if(x==LIMITE_LATERAL_DERECHO){
         return LATERAL_DERECHO;
-    }else if(y-1 == LIMITE_ARRIBA){
+    }else if(y == LIMITE_ARRIBA){
         return SUPERIOR;
-    }else if(y+1 == LIMITE_ABAJO){
+    }else if(y== LIMITE_ABAJO){
         return INFERIOR;
     }else{
         return NO_COLISION;
     }
 }
 
-void ReiniciarPelota(Pelota * pelota,Plataforma * plataforma){
-        pelota->y = plataforma->y-1;
-        pelota->x = plataforma->x;
-        pelota->movimiento =false;
-        pelota->izquierda =false;
-        pelota->derecha =false;
-        pelota->arriba = false;
-        pelota->abajo = false;
+void ReiniciarPelota(Juego * juego){
+        juego->pelota.y = juego->plataforma.y-1;
+        juego->pelota.x = juego->plataforma.x;
+        juego->pelota.movimiento =false;
+        juego->pelota.izquierda =false;
+        juego->pelota.derecha =false;
+        juego->pelota.arriba = false;
+        juego->pelota.abajo = false;
 }
 
 void QuitarVidas(Juego * juego){
@@ -419,6 +395,7 @@ bool VerificarGanar(Juego * juego){
         puts("GAME OVER");
         return false;
     }else{
+        
         return true;
     }
 }
