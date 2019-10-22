@@ -67,6 +67,7 @@ void Inicializar(Juego *juego){
         positionX=10;
         positionY++;
     }
+
 }
 
 void DibujarElementos(Juego * juego){
@@ -119,11 +120,6 @@ void DibujarElementos(Juego * juego){
 void DibujarVidas(Juego * juego){
     uint8_t fg,bg;
     get_color(&fg,&bg);
-
-    //x 28 y 35
-
-    //limpiar y luego dibujar
-
 
     set_color(WHITE,BLACK);
     set_cursor(28,35);
@@ -249,7 +245,6 @@ bool ColisionPlataforma(Juego * juego){
     || juego->pelota.x==juego->plataforma.x-1
     || juego->pelota.x==juego->plataforma.x-2) 
     && juego->pelota.y == juego->plataforma.y-1){
-        //puts("no cayo");
         return true;
     }
     return false;
@@ -359,7 +354,6 @@ void DecidirTrayectoria(Juego * juego,uint8_t colision){
             }
         break;    
     case INFERIOR:
-               puts("Cayo");
                QuitarVidas(juego);
                BorrarPelota(juego);
                ReiniciarPelota(juego);
@@ -410,12 +404,135 @@ void QuitarVidas(Juego * juego){
     juego->vidas--;
 }
 bool VerificarGanar(Juego * juego){
+    uint8_t check = 0;
     if(juego->vidas<=0){
         set_cursor(13,34);
         puts("GAME OVER");
         return false;
     }else{
-        
+        if(DestruyoBloques(juego)){
+            //no hay problema sigue
+            return true;
+        }else{
+            //no hay ningun bloque
+            return false;
+
+        }
+    }
+}
+
+void ColisionBloques(Juego * juego){
+    for(unsigned i=0;i<4;i++){
+        for(unsigned j=0;j<21;j++){
+            //si pega abajo
+            if((juego->pelota.x == juego->bloques[i][j].x
+            || juego->pelota.x== juego->bloques[i][j].x
+            || juego->pelota.x== juego->bloques[i][j].x-1) 
+            && (juego->pelota.y == juego->bloques[i][j].y-1
+            && !juego->bloques[i][j].impacto)){
+                    //si pega abajo su trayectoria se invierte de arriba o abajo
+                    TrayectoriaBloques(juego,i,j,INVERSION_Y);
+
+            }//si pega arriba
+            else if((juego->pelota.x == juego->bloques[i][j].x
+            || juego->pelota.x== juego->bloques[i][j].x
+            || juego->pelota.x== juego->bloques[i][j].x-1) 
+            && (juego->pelota.y == juego->bloques[i][j].y+1
+            && !juego->bloques[i][j].impacto)){
+                    //si pega arriba su trayectoria se invierte de arriba o abajo
+                    TrayectoriaBloques(juego,i,j,INVERSION_Y);
+            }// si pega a los lados
+            else if((juego->pelota.x== juego->bloques[i][j].x+1
+            || juego->pelota.x== juego->bloques[i][j].x-1) 
+            && (juego->pelota.y == juego->bloques[i][j].y
+            && !juego->bloques[i][j].impacto)){
+                    // si pega en un lado su trayectoria se invierte en los lados
+                    TrayectoriaBloques(juego,i,j,INVERSION_X);
+            }
+        }
+    }
+}
+void TrayectoriaBloques(Juego * juego,uint8_t x,uint8_t y, uint8_t trayectoria){
+    juego->bloques[x][y].impacto = true;
+    switch (trayectoria)
+    {
+    case INVERSION_Y:
+            if(juego->pelota.arriba){
+                juego->pelota.arriba = false;
+                juego->pelota.abajo = true;
+            }else{
+                juego->pelota.arriba = true;
+                juego->pelota.abajo = false;
+            }
+        break;
+    case INVERSION_X:
+            if(juego->pelota.izquierda){
+                juego->pelota.izquierda = false;
+                juego->pelota.derecha = true;
+            }else{
+                juego->pelota.izquierda = true;
+                juego->pelota.derecha = false;
+            }
+        break;
+    default:
+            // no pasa nada
+        break;
+    }
+}
+
+void RedibujarBloques(Juego * juego){
+    uint8_t fg,bg,fgp,bgp;
+    get_color(&fg,&bg);
+    set_color(RED,WHITE);
+
+    for(unsigned i = 0; i<4;i++){
+        for(unsigned j=0;j<21;j++){
+
+            if(!juego->bloques[i][j].impacto){
+
+            set_cursor(juego->bloques[i][j].y,juego->bloques[i][j].x-1);
+            put_char(CUERPO_IZQUIERDA);
+            set_cursor(juego->bloques[i][j].y,juego->bloques[i][j].x);
+            put_char(CUERPO_CENTRO);
+            set_cursor(juego->bloques[i][j].y,juego->bloques[i][j].x+1);
+            put_char(CUERPO_DERECHA);
+
+            }else{
+
+            get_color(&fgp,&bgp);
+            set_color(BLACK,BLACK);
+
+            set_cursor(juego->bloques[i][j].y,juego->bloques[i][j].x-1);
+            put_char(BORRADOR);
+            set_cursor(juego->bloques[i][j].y,juego->bloques[i][j].x);
+            put_char(BORRADOR);
+            set_cursor(juego->bloques[i][j].y,juego->bloques[i][j].x+1);
+            put_char(BORRADOR);
+
+            set_color(fgp,bgp);
+            }
+        }
+    }
+
+    set_color(fg,bg);
+}
+
+bool DestruyoBloques(Juego * juego){
+    uint8_t check = 0;
+    for(unsigned i = 0; i<4;i++){
+        for(unsigned j = 0; j<21;j++){
+            if(juego->bloques[i][j].impacto){
+                check++;
+            }
+        }
+    }
+
+        //verifica si hay 84 impactos
+    if(check == TOTAL_BLOQUES){
+        set_cursor(13,34);
+        puts("GANASTE <3");
+        return false;
+    }else{
         return true;
     }
 }
