@@ -1,0 +1,9 @@
+1. Funciones a convertir a ensamblador:
+
+   Inicializar
+   MovimientoPlataforma
+   MovimientoPelota
+
+2. Corregir BUG en el juego.  Cuando la pelota es lanzada
+   en el lado izquierdo se sale de la pantalla y el sistema
+   hace crash.
