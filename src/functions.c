@@ -1,5 +1,18 @@
 #include "functions.h"
 
+void DibujarLimiteSuperior(){
+    uint8_t fg,bg;
+    get_color(&fg,&bg);
+
+    set_color(WHITE,BLACK);
+    //limite superior
+    for(unsigned i=5;i<=75;i++){
+        set_cursor(4,i);
+        put_char(PARED_ARRIBA);
+    }
+
+    set_color(fg,bg);
+}
 
 void DibujarLimites(){
     clear_screen();
@@ -40,7 +53,7 @@ void Inicializar(Juego *juego){
     juego->plataforma.y = 25; //abajo  
 
     //inicializar vidas
-    juego->vidas = 3;
+    juego->vidas = 6;
 
     //inicializar la pelota
     juego->pelota.x = 37;
@@ -58,7 +71,7 @@ void Inicializar(Juego *juego){
     for(unsigned i=0;i<4;i++){
 
         for(unsigned j=0;j<21;j++){
-            juego->bloques[i][j].impacto= false;
+            juego->bloques[i][j].impacto= true;
             juego->bloques[i][j].x = positionX;
             juego->bloques[i][j].y = positionY;
 
@@ -67,6 +80,8 @@ void Inicializar(Juego *juego){
         positionX=10;
         positionY++;
     }
+
+    juego->bloques[3][10].impacto=false;
 
 }
 
@@ -128,7 +143,7 @@ void DibujarVidas(Juego * juego){
     get_color(&fg,&bg);
 
     set_color(BLACK,BLACK);
-    for(unsigned i=0;i<3;i++){
+    for(unsigned i=0;i<6;i++){
         put_char(BORRADOR);
         puts(" ");
     }
@@ -282,6 +297,7 @@ void MovimientoPelota(Juego * juego){
                DibujarPelota(juego);
                colision = LimitesMapa(juego->pelota.x,juego->pelota.y);
                DecidirTrayectoria(juego,colision);
+                
            
        }else if(juego->pelota.derecha && juego->pelota.arriba){
                
@@ -291,6 +307,7 @@ void MovimientoPelota(Juego * juego){
                DibujarPelota(juego);
                colision = LimitesMapa(juego->pelota.x,juego->pelota.y);
                DecidirTrayectoria(juego,colision);
+            
            
        }else if(juego->pelota.izquierda && juego->pelota.abajo){       
                BorrarPelota(juego);
@@ -299,6 +316,7 @@ void MovimientoPelota(Juego * juego){
                DibujarPelota(juego);
                colision = LimitesMapa(juego->pelota.x,juego->pelota.y);
                DecidirTrayectoria(juego,colision);
+               DibujarLimiteSuperior();
     
        }else if(juego->pelota.derecha && juego->pelota.abajo){
                BorrarPelota(juego);
@@ -307,6 +325,7 @@ void MovimientoPelota(Juego * juego){
                DibujarPelota(juego);
                colision = LimitesMapa(juego->pelota.x,juego->pelota.y);
                DecidirTrayectoria(juego,colision);
+               DibujarLimiteSuperior();
        }
 
 }
@@ -347,10 +366,12 @@ void DecidirTrayectoria(Juego * juego,uint8_t colision){
                     ReiniciarTrayectoria(juego);
                     juego->pelota.abajo = true;
                     juego->pelota.izquierda = true;
+                    
             }else{
                     ReiniciarTrayectoria(juego);
                     juego->pelota.abajo = true;
                     juego->pelota.derecha = true;
+                   
             }
         break;    
     case INFERIOR:
@@ -359,6 +380,16 @@ void DecidirTrayectoria(Juego * juego,uint8_t colision){
                ReiniciarPelota(juego);
                DibujarPelota(juego);
                DibujarVidas(juego);
+        break;
+    case ESQUINA:
+             if(juego->pelota.izquierda){
+                 ReiniciarTrayectoria(juego);
+                 juego->pelota.abajo = true;
+                 juego->pelota.derecha = true;
+             }else{
+                 juego->pelota.abajo = true;
+                 juego->pelota.izquierda = true;
+             }
         break;
     default:
         if(ColisionPlataforma(juego)){
@@ -381,10 +412,12 @@ uint8_t LimitesMapa(uint8_t x, uint8_t y){
         return LATERAL_IZQUIERDO;
     }else if(x==LIMITE_LATERAL_DERECHO){
         return LATERAL_DERECHO;
-    }else if(y == LIMITE_ARRIBA){
+    }else if(y+1== LIMITE_ARRIBA){
         return SUPERIOR;
     }else if(y== LIMITE_ABAJO){
         return INFERIOR;
+    }else if((x==LIMITE_LATERAL_IZQUIERDO && y+1 == LIMITE_ARRIBA)|| (x==LIMITE_LATERAL_DERECHO && y-1==LIMITE_ARRIBA)){
+        return ESQUINA;
     }else{
         return NO_COLISION;
     }

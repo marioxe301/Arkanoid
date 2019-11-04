@@ -13,11 +13,11 @@ int main() {
     {
         uint8_t keyboard = keypad_getkey();
         MovimientoPlataforma(&juego,keyboard);
-        RedibujarBloques(&juego);
         MovimientoPelota(&juego);
         ColisionBloques(&juego);
+        RedibujarBloques(&juego);
 
-        delay_ms(50);
+        delay_ms(100);
     }
     
     RedibujarBloques(&juego);

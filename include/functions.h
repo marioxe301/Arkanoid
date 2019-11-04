@@ -38,6 +38,7 @@
 #define SUPERIOR 3
 #define INFERIOR 4
 #define NO_COLISION 5
+#define ESQUINA 6
 
 // codigos de movimiento
 #define INVERSION_Y 2
@@ -55,6 +56,7 @@
 
 void Inicializar(Juego * juego);
 void DibujarLimites();
+void DibujarLimiteSuperior();
 void DibujarElementos(Juego * juego);
 void DibujarVidas(Juego * juego);
 void Loop(Juego *juego);
