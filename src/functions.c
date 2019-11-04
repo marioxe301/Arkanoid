@@ -316,7 +316,7 @@ void MovimientoPelota(Juego * juego){
                DibujarPelota(juego);
                colision = LimitesMapa(juego->pelota.x,juego->pelota.y);
                DecidirTrayectoria(juego,colision);
-               DibujarLimiteSuperior();
+               //DibujarLimiteSuperior();
     
        }else if(juego->pelota.derecha && juego->pelota.abajo){
                BorrarPelota(juego);
@@ -325,7 +325,7 @@ void MovimientoPelota(Juego * juego){
                DibujarPelota(juego);
                colision = LimitesMapa(juego->pelota.x,juego->pelota.y);
                DecidirTrayectoria(juego,colision);
-               DibujarLimiteSuperior();
+               //DibujarLimiteSuperior();
        }
 
 }
@@ -412,7 +412,7 @@ uint8_t LimitesMapa(uint8_t x, uint8_t y){
         return ESQUINA;
    }else if(x==LIMITE_LATERAL_DERECHO){
         return LATERAL_DERECHO;
-    }else if(y+1== LIMITE_ARRIBA){
+    }else if(y== LIMITE_ARRIBA){
        
         return SUPERIOR;
     }else if(y== LIMITE_ABAJO){
