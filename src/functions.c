@@ -408,16 +408,17 @@ void DecidirTrayectoria(Juego * juego,uint8_t colision){
 }
 
 uint8_t LimitesMapa(uint8_t x, uint8_t y){
-    if(x==LIMITE_LATERAL_IZQUIERDO){
-        return LATERAL_IZQUIERDO;
-    }else if(x==LIMITE_LATERAL_DERECHO){
+    if((x==LIMITE_LATERAL_IZQUIERDO && y <= LIMITE_ARRIBA) || (x==LIMITE_LATERAL_DERECHO && y<=LIMITE_ARRIBA)){
+        return ESQUINA;
+   }else if(x==LIMITE_LATERAL_DERECHO){
         return LATERAL_DERECHO;
     }else if(y+1== LIMITE_ARRIBA){
+       
         return SUPERIOR;
     }else if(y== LIMITE_ABAJO){
         return INFERIOR;
-    }else if((x==LIMITE_LATERAL_IZQUIERDO && y+1 == LIMITE_ARRIBA)|| (x==LIMITE_LATERAL_DERECHO && y+1==LIMITE_ARRIBA)){
-        return ESQUINA;
+    }else  if(x==LIMITE_LATERAL_IZQUIERDO){
+        return LATERAL_IZQUIERDO;
     }else{
         return NO_COLISION;
     }
