@@ -1,5 +1,6 @@
 #include "functions.h"
 
+//funcion para dibujar solo la parte de arriba
 void DibujarLimiteSuperior(){
     uint8_t fg,bg;
     get_color(&fg,&bg);
