@@ -416,7 +416,7 @@ uint8_t LimitesMapa(uint8_t x, uint8_t y){
         return SUPERIOR;
     }else if(y== LIMITE_ABAJO){
         return INFERIOR;
-    }else if((x==LIMITE_LATERAL_IZQUIERDO && y+1 == LIMITE_ARRIBA)|| (x==LIMITE_LATERAL_DERECHO && y-1==LIMITE_ARRIBA)){
+    }else if((x==LIMITE_LATERAL_IZQUIERDO && y+1 == LIMITE_ARRIBA)|| (x==LIMITE_LATERAL_DERECHO && y+1==LIMITE_ARRIBA)){
         return ESQUINA;
     }else{
         return NO_COLISION;
