@@ -71,7 +71,7 @@ void Inicializar(Juego *juego){
     for(unsigned i=0;i<4;i++){
 
         for(unsigned j=0;j<21;j++){
-            juego->bloques[i][j].impacto= true;
+            juego->bloques[i][j].impacto= false;
             juego->bloques[i][j].x = positionX;
             juego->bloques[i][j].y = positionY;
 
@@ -81,7 +81,6 @@ void Inicializar(Juego *juego){
         positionY++;
     }
 
-    juego->bloques[3][10].impacto=false;
 
 }
 
